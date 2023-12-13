@@ -135,8 +135,7 @@ function init() {
     } else if (key === right && slippyDirection !== -1) {
       // console.log("RIGHT");
       //currentPosition++;
-      slippyDirection = 1
-      console.log(currentPosition);
+      slippyDirection = 1   
     } else {
       // console.log("INVALID KEY");
     }

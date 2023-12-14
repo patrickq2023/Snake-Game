@@ -5,22 +5,29 @@ function init() {
 
   // CREATE GRID
   const grid = document.querySelector(".grid");
+  const gameOverAudio = document.querySelector("#gameover");
+  gameOverAudio.src = "./assets/Gameover.mp3";
+  const munchAudio = document.querySelector("#munch");
+  munchAudio.src = "./assets/Munch.mp3";
+  let scoreBoard = document.getElementById("scoreboard");
 
   //? VARIABLES
   // CONFIG
-  const width = 10;
-  const height = 10;
+  const width = 20;
+  const height = 20;
   const cellCount = width * height;
-  let generateApplePosition
-  let score = 0
+  let generateApplePosition;
+  let score = 0;
+  scoreBoard.innerText = `Score ${score}`
+
 
   //CHARACTER COFIGURATION
   const startingPosition = [44];
   let currentPosition = startingPosition;
   let cells = [];
-  const slippy = [44, 45, 46];  
-  let slippyTime 
-  let slippyDirection = -1
+  const slippy = [168, 169, 170];
+  let slippyTime;
+  let slippyDirection = -1;
 
   //! FUNCTIONS
   // CREATE GRIDD CELLS
@@ -29,7 +36,7 @@ function init() {
     for (let i = 0; i < cellCount; i++) {
       const cell = document.createElement("div");
       // Add index to div elements
-      cell.innerText = i;
+      // cell.innerText = i;
       // Add index as an attribute
       cell.dataset.id = i;
       // Add the height and width to each grid cell (div)
@@ -43,52 +50,82 @@ function init() {
     // Add SNAKE (class) to starting position
     // addSnake([44, 45, 46]);
     createSlippy();
-    addApple()
+    addApple();
   }
 
   // CREATE THE ACTUAL SNAKE (SLIPPY)
 
   function createSlippy() {
-    slippy.forEach((cell) => {
+    const [slippyHead, ...slippyBody] = slippy
+    cells[slippyHead].classList.add('snakehead')
+    slippyBody.forEach((cell) => {
       cells[cell].classList.add("snake");
+    });
+  }
+  function removeSlippy() {
+    const [slippyHead, ...slippyBody] = slippy
+    cells[slippyHead].classList.remove('snakehead')
+    slippyBody.forEach((cell) => {
+      cells[cell].classList.remove("snake");
     });
   }
   // MOVE SLIPPY
 
   function moveSlippy(position) {
-    clearInterval(slippyTime)
-    slippyTime = setInterval(() => {      
-      slippy.forEach((cell) => {
-        cells[cell].classList.remove("snake");
-      });    
-      if (!cells[slippy[0] + slippyDirection].classList.contains('apple'))  {
-        slippy.pop()
-      }   else { 
-        removeApple ()
-        addApple()
-        score ++
-        console.log('Score: ', score)
+    clearInterval(slippyTime);
+    slippyTime = setInterval(() => {
+      removeSlippy();
+      //? Logic for collisions
 
-      }  
+      const slippyX = slippy[0] % width;
+      const slippyY = Math.floor(slippy[0] / width);
+      let slippyCollision = false;
+      for (let i = 1; i < slippy.length; i++) {
+        if (slippy[0] + slippyDirection === slippy[i]) {
+          slippyCollision = true;
+        }
+      }
+      if (
+        slippyCollision ||
+        (slippyX === 19 && slippyDirection === 1) ||
+        (slippyX === 0 && slippyDirection === -1) ||
+        (slippyY === 19 && slippyDirection === 20) ||
+        (slippyY === 0 && slippyDirection === -20)
+      ) {
+        clearInterval(slippyTime);
+        gameOverAudio.play();
+        console.log("GAME OVER");
+        document.removeEventListener("keyup", handleMovemet)
+        return;
+      }
+
+      if (!cells[slippy[0] + slippyDirection].classList.contains("apple")) {
+        slippy.pop();
+      } else {
+        removeApple();
+        addApple();
+        score++;
+        munchAudio.play();
+        scoreBoard.innerText = `Score ${score}`;
+        console.log("Score: ", score);
+      }
       slippy.unshift(slippy[0] + slippyDirection);
-      createSlippy();     
-    }, 500)
-   
+      createSlippy();
+    }, 300);
   }
-// SLIPPY DIRECTION
 
-
+  
+  // SLIPPY DIRECTION
 
   // CREATE FOOD RANDOMLY
 
   function addApple() {
-     generateApplePosition = Math.floor(Math.random() * cells.length);
-    cells[generateApplePosition].classList.add("apple");    
+    generateApplePosition = Math.floor(Math.random() * cells.length);
+    cells[generateApplePosition].classList.add("apple");
   }
 
-  function removeApple() {  
+  function removeApple() {
     cells[generateApplePosition].classList.remove("apple");
-    
   }
 
   // // ? ADD SNAKE CLASS
@@ -107,8 +144,6 @@ function init() {
 
   // ? HANDLE MOVEMENT
   function handleMovemet(event) {
-   
-
     const key = event.keyCode;
     const up = 38;
     const down = 40;
@@ -118,24 +153,23 @@ function init() {
     // Remomve Snake from previous position before updating current position to new cell
     // removeSnake();
 
-   
     // check which key has been pressed and execute code
-    if (key === up && slippyDirection !== 10) {
+    if (key === up && slippyDirection !== 20) {
       // console.log("UP");
-    // currentPosition -= width;
-    slippyDirection = -10
-    } else if (key === down && slippyDirection !== -10 ) {
+      // currentPosition -= width;
+      slippyDirection = -20;
+    } else if (key === down && slippyDirection !== -20) {
       // console.log("DOWN");
-     // currentPosition += width;
-     slippyDirection = 10
+      // currentPosition += width;
+      slippyDirection = 20;
     } else if (key === left && slippyDirection !== 1) {
       // console.log("LEFT");
       //currentPosition--;
-      slippyDirection = -1
+      slippyDirection = -1;
     } else if (key === right && slippyDirection !== -1) {
       // console.log("RIGHT");
       //currentPosition++;
-      slippyDirection = 1   
+      slippyDirection = 1;
     } else {
       // console.log("INVALID KEY");
     }
@@ -145,6 +179,7 @@ function init() {
 
   //   //! EVENTS
   document.addEventListener("keyup", handleMovemet);
+  
 
   //! PAGE LOAD
   createGrid(); // CREATE GRID

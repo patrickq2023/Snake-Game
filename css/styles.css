@@ -1,22 +1,42 @@
+@font-face {
+  font-family: 'Bethanie Snake_PersonalUseOnly';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Bethanie Snake_PersonalUseOnly'), url('../fonts/Bethanie\ Snake_PersonalUseOnly.woff') format('woff');
+}
+
 * {
     box-sizing: border-box;
   }
   
   body {
+    background-image: url(../assets/background.jpg); 
     height: 100vh;
     margin: 0;    
   }
-  
+
+  h1 {
+    height:20px;
+    margin-top: 80px; 
+    color: #2ef600;
+    font-family: 'Bethanie Snake_PersonalUseOnly';
+    font-size: 120px;        
+    text-align: center;
+    text-shadow: 8px 8px 4px #0a1b06;     
+    padding: 0;     
+  }
   
   .grid-wrapper {
-    height: 100vh;
+    height: 80vh;    
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
   }
   
   .grid {
     align-items: center;
+    background-color: rgb(45, 45, 45);
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
     display: flex;
     flex-wrap: wrap;
@@ -24,10 +44,11 @@
     justify-content: center;
     height: 600px;
     width: 600px;
+    box-shadow: 4px 4px 8px #0a1b06;
   }
   
   .grid div {
-    border: 1px solid lightgrey;
+    border: 1px solid rgb(65, 65, 65);
     flex-grow: 1;
     height: 10%;
     width: 10%;
@@ -40,6 +61,24 @@
     background-size: contain;
     cursor: pointer;
   } 
+  .grid div.snakehead {
+    background-color: yellow;
+  }
   .apple {
-    background-color: #ff0600;  
+    /* background-color: #ff0600;  */
+    background-image: url('../assets/apple.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  #scoreboard {
+    height: 80px;
+    width: 600px;    
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+    font-family:  Helvetica;
+    font-size: 60px;
+    color: yellow;
+    text-shadow: 3px 3px 4px #0a1b06;  
   }

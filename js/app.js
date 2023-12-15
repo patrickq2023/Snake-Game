@@ -49,9 +49,7 @@ function init() {
       grid.appendChild(cell);
       // Add newly created div cell to cells array
       cells.push(cell);
-    }
-    // Add SNAKE (class) to starting position
-    // addSnake([44, 45, 46]);
+    }    
     createSlippy();
     addApple();
   }

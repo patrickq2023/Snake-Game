@@ -10,6 +10,7 @@ function init() {
   const munchAudio = document.querySelector("#munch");
   munchAudio.src = "./assets/Munch.mp3";
   let scoreBoard = document.getElementById("scoreboard");
+  const gameOver = document.getElementById("endofgame")
 
   //? VARIABLES
   // CONFIG
@@ -22,7 +23,7 @@ function init() {
 
 
   //CHARACTER COFIGURATION
-  const startingPosition = [44];
+  const startingPosition = [168];
   let currentPosition = startingPosition;
   let cells = [];
   const slippy = [168, 169, 170];
@@ -93,7 +94,8 @@ function init() {
         (slippyY === 0 && slippyDirection === -20)
       ) {
         clearInterval(slippyTime);
-        gameOverAudio.play();
+        gameOverAudio.play();   
+        gameOver.innerHTML = 'GAME OVER!'    
         console.log("GAME OVER");
         document.removeEventListener("keyup", handleMovemet)
         return;

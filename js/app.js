@@ -11,6 +11,7 @@ function init() {
   munchAudio.src = "./assets/Munch.mp3";
   let scoreBoard = document.getElementById("scoreboard");
   const gameOver = document.getElementById("endofgame")
+  
 
   //? VARIABLES
   // CONFIG
@@ -31,7 +32,8 @@ function init() {
   let slippyDirection = -1;
 
   //! FUNCTIONS
-  // CREATE GRIDD CELLS
+  // CREATE GRID CELLS
+
   function createGrid() {
     // Use the cellCount to create grid cells
     for (let i = 0; i < cellCount; i++) {
@@ -76,7 +78,8 @@ function init() {
     clearInterval(slippyTime);
     slippyTime = setInterval(() => {
       removeSlippy();
-      //? Logic for collisions
+
+  //? Logic for collisions
 
       const slippyX = slippy[0] % width;
       const slippyY = Math.floor(slippy[0] / width);
@@ -113,11 +116,9 @@ function init() {
       }
       slippy.unshift(slippy[0] + slippyDirection);
       createSlippy();
-    }, 300);
-  }
-
+    }, 250);
+  } 
   
-  // SLIPPY DIRECTION
 
   // CREATE FOOD RANDOMLY
 
@@ -128,23 +129,10 @@ function init() {
 
   function removeApple() {
     cells[generateApplePosition].classList.remove("apple");
-  }
-
-  // // ? ADD SNAKE CLASS
-  // function addSnake(position) {
-  //   console.log("snake being added to the following cells->", position);
-  //   cells[startingPosition].classList.add("snake");
-  //   cells[currentPosition].style.backgroundColor = "#2ef600";
-  // }
-  //? REMOVE SNAKE CLASS
-  // function removeSnake() {
-  // console.log('SNAKE REMOVED', cells, currentPosition)
-  //   cells[currentPosition].classList.remove("snake");
-  //   cells[currentPosition].style.backgroundColor = "white";
-  // console.log(cells[currentPosition].classList)
-  // }
+  }  
 
   // ? HANDLE MOVEMENT
+
   function handleMovemet(event) {
     const key = event.keyCode;
     const up = 38;
@@ -153,7 +141,10 @@ function init() {
     const right = 39;
 
     // Remomve Snake from previous position before updating current position to new cell
-    // removeSnake();
+    
+    if (document.getElementById('start-message').innerText === 'Press an arrow key to start the game!') {
+      document.getElementById('start-message').innerText = ''
+    }
 
     // check which key has been pressed and execute code
     if (key === up && slippyDirection !== 20) {
